@@ -31,7 +31,7 @@ app.use(cors());
 
 app.use('/api/users',user);
 app.use('/api/favorite',favorite);
-app.use('/api/offer',offer);
+app.use('/api/offers',offer);
 app.use('/api/reservation',reservation);
 
 

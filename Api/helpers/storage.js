@@ -26,4 +26,12 @@ const storage = multer({
     fileFilter: fileFilter })
     .single('image');
 
-module.exports = storage;
+const multistorage = multer({ 
+  storage: diskStorage,
+  limits: {
+      fileSize: 1024 * 1024 * 50
+  },
+  fileFilter: fileFilter })
+  .any('images[]');
+
+module.exports = {storage,multistorage};

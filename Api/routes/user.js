@@ -12,14 +12,14 @@ const {
 } = require('../controllers/UserController');
 const {userSignUpValidator,userSignInValidator} = require('../middlewars/userValidator');
 const {verifierToken}=require('../middlewars/verifierToken');
-const storage = require('../helpers/storage');
+const {storage} = require('../helpers/storage');
 
 //API Routes
 
 //>>User
 router.get('/all',getAllUsers);
 router.get('/:id',verifierToken,getUser);
-router.put('/:id',verifierToken,updateUser);
+router.put('/:id',storage,verifierToken,updateUser);
 
 router.post('/block/:id',verifierToken,block_unblock);
 router.delete('/:id',verifierToken,deleteUser);

@@ -151,13 +151,27 @@ exports.getUser=async (req,res)=>{
  }
 
 //Update User profile
-exports.updateUser=(req,res)=>{
-	const id = req.params.id;
-	User.findByIdAndUpdate(id,req.body,{new:true}, (err, user)=>{
+exports.updateUser=async (req,res)=>{
+    const id = req.params.id;
+    //Recuperer ancien image d'utulisteur
+    var imagePath=(await User.find({_id:id}).select({imagePath:1}))[0].imagePath;
+
+    console.log("image ="+imagePath)
+    if(req.file!==undefined) imagePath = `${process.env.URL}/${req.file.path}`;
+    const {name,email,address,city,phone,gender} = req.body;
+	
+	User.findByIdAndUpdate(id,{name,email,address,city,phone,gender,imagePath},{new:true}, (err, user)=>{
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
+            condole.log(err)
         }
-        res.json(user);
+        //régénérer un nouveau token de user
+        const {id,name,email,role,address,city,phone,gender,image,confirmed,blocked,imagePath}=user;
+        const token =jwt.sign(
+            {user:{id,name,email,role,address,city,phone,gender,image,confirmed,blocked,imagePath}},
+            process.env.JWT_SECRET,
+            {expiresIn: '1d'});
+        res.header("auth_token", token).json({ token: token, id: user.id });
     });
 }
 //Delete User By Admin
