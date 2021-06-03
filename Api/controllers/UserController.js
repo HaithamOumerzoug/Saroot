@@ -29,6 +29,11 @@ exports.signup=async (req,res)=>{
      if(req.file!==undefined) imagePath = `${process.env.URL}/${req.file.path}`;
     
     const {role,name,email,address,city,phone,password,gender} = req.body;
+    console.log();
+    //Tester le unicité d'email et phone 
+    if(await(await User.find({email:email})).length!==0){return res.status(400).send({message:"Cet e-mail est déjà pris !!!"})}
+    if(await(await User.find({phone:phone})).length!==0){return res.status(400).send({message:"Ce numéro de téléphone à déjà pris !!!"})}
+    //Create user
     const user = new User({
         role,
         name,
@@ -120,6 +125,7 @@ exports.getAllUsers=async (req,res)=>{
         res.status(400).send(err);
     }
 } 
+
 //Get One User
 exports.getUser=async (req,res)=>{
     const id = req.params.id;
@@ -131,23 +137,24 @@ exports.getUser=async (req,res)=>{
         res.status(400).send({message : "ERROR"});
     }
  }
+
  //Block and Unblock One User By Admin
  exports.block_unblock=async (req,res)=>{
-     if(req.user_jwt.user.role!=2){
+    if(req.user_jwt.user.role!=2){
 		res.status(401).json({error:'Not an admin !'})
 	}
     const id = req.params.id;
     //Get user
     const user =await User.findById(id);
     //Change bloked value 
-     User.updateOne({_id:id},{$set:{
+    User.updateOne({_id:id},{$set:{
         blocked:!user.blocked
      }},(err,msg)=>{
         if (err) {
             res.status(400).send(err);
         }
         res.json(msg);
-     });
+    });
  }
 
 //Update User profile

@@ -28,9 +28,11 @@ const UserSchema =new mongoose.Schema({
     address:{
         type:String,
         minlength:4,
+        maxlength:100
     },
     city:{
         type:String,
+        maxlength:50
     },
     role:{
         type:Number,

@@ -15,4 +15,5 @@ const FavoriteSchema =new mongoose.Schema({
 },{timestamps:true});
 
 FavoriteSchema.index({client: 1, offer: 1}, {unique: true,dropDups: true});
+
 module.exports=mongoose.model('Favorite',FavoriteSchema);
