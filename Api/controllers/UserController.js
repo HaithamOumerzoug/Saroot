@@ -163,11 +163,14 @@ exports.updateUser=async (req,res)=>{
     //Recuperer ancien image d'utulisteur
     var imagePath=(await User.find({_id:id}).select({imagePath:1}))[0].imagePath;
 
-    console.log("image ="+imagePath)
     if(req.file!==undefined) imagePath = `${process.env.URL}/${req.file.path}`;
     const {name,email,address,city,phone,gender} = req.body;
+
+    //Tester si les nouveaux email et phone ne sont pas déjà dans la base
+	if(await(await User.find({email:email})).length!==0 && email!==req.user_jwt.user.email){return res.status(400).send({message:"Cet e-mail est déjà pris !!!"})}
+    if(await(await User.find({phone:phone})).length!==0 && phone!==req.user_jwt.user.phone){return res.status(400).send({message:"Ce numéro de téléphone à déjà pris !!!"})}
 	
-	User.findByIdAndUpdate(id,{name,email,address,city,phone,gender,imagePath},{new:true}, (err, user)=>{
+    User.findByIdAndUpdate(id,{name,email,address,city,phone,gender,imagePath},{new:true}, (err, user)=>{
         if (err) {
             return res.status(400).send(err);
             condole.log(err)
@@ -192,28 +195,24 @@ exports.deleteUser=async (req,res)=>{
 			if (err){
 				res.status(400).send(err);
 			}
-			//res.json(rese);
             console.log(`All reservations have been deleted ${rest}`);
 		});
 		Offer.deleteMany({landlord: remId }, function (err, offer) {
 			if (err){
 				    res.status(400).send(err);
 			}
-			//res.json(offer);
             console.log("All offers have been deleted");
 		});
 		Message.deleteMany({userSrc: remId,userDst: remId }, function (err, msg) {
 			if (err){
 				res.status(400).send(err);
 			}
-			//res.json(msg);
             console.log("All messages have been deleted");
 		});
 		Favorite.deleteMany({client: remId }, function (err, fav) {
 			if (err){
 				res.status(400).send(err);
 			}
-			//res.json(fav);
             console.log("All favorites have been deleted");
 		});
 		const userrem =await User.findByIdAndDelete(remId);
