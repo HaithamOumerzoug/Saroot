@@ -19,7 +19,7 @@ const OfferSchema =new mongoose.Schema({
         type:Number,
         required:true
     },
-    photos:[{
+    imagePaths:[{
         type:String
     }],
     localisation:{

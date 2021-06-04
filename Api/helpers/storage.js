@@ -5,7 +5,7 @@ const diskStorage = multer.diskStorage({
     cb(null, './images/');
   },
   filename: function(req, file, cb) {
-    cb(null,  file.originalname);
+    cb(null, new Date().getTime() +"_"+ file.originalname);
   }
 });
 
@@ -27,11 +27,11 @@ const storage = multer({
     .single('image');
 
 const multistorage = multer({ 
-  storage: diskStorage,
-  limits: {
-      fileSize: 1024 * 1024 * 50
-  },
-  fileFilter: fileFilter })
-  .any('images[]');
+    storage: diskStorage,
+    limits: {
+        fileSize: 1024 * 1024 * 50
+    },
+    fileFilter: fileFilter })
+    .any('images[]');
 
 module.exports = {storage,multistorage};

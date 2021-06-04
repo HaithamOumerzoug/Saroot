@@ -48,6 +48,7 @@ exports.signup=async (req,res)=>{
 
     try {
         await user.save();
+        //Générer le token de validation d'email d'utilisateur et l'envoyer à son email
         jwt.sign(
             {_id:user._id},
             process.env.EMAIL_SECRET,
@@ -79,7 +80,8 @@ exports.signup=async (req,res)=>{
                     const result = await transport.sendMail(mailOptions);
                         return result;
                   } catch (error) {
-                        console.log(error);
+
+                        console.log("Erreur :"+error);
                   }
             })
         res.json(user);
@@ -93,7 +95,7 @@ exports.signin=(req,res)=>{
     const {email,password}=req.body;
 
     User.findOne({email},(err,user)=>{
-        //
+        //Tester si l'email existe
         if(err || !user) return res.status(401).json({message:'E-mail n\'existe pas, veuillez vous inscrire !!!'});
 
         //Password is valide
@@ -104,7 +106,9 @@ exports.signin=(req,res)=>{
 
         //Test if user email is confirmed
         if(!user.confirmed) return res.status(401).json({message:'Email non confirmé !!!'});
+        
         const {id,name,email,role,address,city,phone,gender,image,confirmed,blocked,imagePath}=user;
+        //Générer le token d'utilisateur 
         const token =jwt.sign(
             {user:{id,name,email,role,address,city,phone,gender,image,confirmed,blocked,imagePath}},
             process.env.JWT_SECRET,
@@ -119,7 +123,7 @@ exports.getAllUsers=async (req,res)=>{
     try {
         const users=await User.find(
             { role: {$ne: 2}}
-        ).limit(10);
+        ).sort({updatedAt:-1});
         res.json(users);
     } catch (err) {
         res.status(400).send(err);
@@ -238,6 +242,7 @@ exports.confirmation_token=async (req,res)=>{
                 if (err) {
                     return res.status(400).send(err);
                 }
+                //Just know for redirect to Front-End app
                 res.redirect('http://localhost:4200/signin');
             }
         );

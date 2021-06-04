@@ -24,7 +24,7 @@ exports.deleteReservation = async (req,res)=>{
 exports.showReservation= async (req,res)=>{
     const idOffer = req.params.id;
     try {
-        const Reservations =await Reservation.find({offer:idOffer});
+        const Reservations =await Reservation.find({offer:idOffer}).sort({updatedAt:-1});
         res.json(Reservations);
     } catch (err){
         res.status(400).send(err);
@@ -33,7 +33,7 @@ exports.showReservation= async (req,res)=>{
 exports.showReservationByClient= async (req,res)=>{
     const idClient = req.params.id;
     try {
-        const Reservations =await Reservation.find({client:idClient});
+        const Reservations =await Reservation.find({client:idClient}).sort({updatedAt:-1});
         res.json(Reservations);
     } catch (err){
         res.status(400).send(err);

@@ -23,7 +23,7 @@ exports.deleteFromFavorites=async (req,res)=>{
 exports.getFavorites = async (req,res)=>{
 	const idClient = req.params.id;
 	try {
-		const favorites =await Favorite.find({client:idClient});
+		const favorites =await Favorite.find({client:idClient}).sort({updatedAt:-1});
 		res.json(favorites);	
 	} catch (err){
         res.status(400).send(err);

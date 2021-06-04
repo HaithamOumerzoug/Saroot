@@ -3,14 +3,21 @@ const Offer = require('../models/offer');
 const Favorite = require('../models/favorite');
 //Add Offer
 exports.addOffer=async (req,res)=>{
-    const offer = new Offer(req.body);
-    try {
-      await offer.save();
-      res.json(offer);
+  var imagePaths=[];
+  for(let file of req.files){
+    if(file.path!==undefined) imagePaths=[...imagePaths,`${process.env.URL}/${file.path}`] ;
+  }
+  const {title,description,price,numb_room,city,localisation,isFurnished,landlord} = req.body;
+  const offer = new Offer(
+    {title,description,price,numb_room,city,localisation,isFurnished,imagePaths,landlord}
+    );
+  try {
+    await offer.save();
+    res.json(offer);
 
-    } catch (err) {
-      res.status(400).send(err);
-    }
+  } catch (err) {
+    res.status(400).send(err);
+  }
 };
 //Delete Offer
 exports.deleteOffer=async(req, res) => {
@@ -32,9 +39,21 @@ exports.deleteOffer=async(req, res) => {
 	}
 }
 //Update One Offer
-exports.updateOffer=(req, res) => {
-    const id = req.params.id;
-    Offer.findOneAndUpdate(id,req.body,{new:true},(err,offer)=>{
+exports.updateOffer=async (req, res) => {
+  const id = req.params.id;
+  var imagePaths=[];
+  imagePaths=(await Offer.find({_id:id}).select({imagePaths:1}))[0].imagePaths;
+  console.log(req.files)
+  if(req.files.length!==0){
+    imagePaths=[];
+    for(let file of req.files){
+    if(file.path!==undefined) imagePaths=[...imagePaths,`${process.env.URL}/${file.path}`] ;
+  }
+  }
+  
+  const {title,description,price,numb_room,city,localisation,isFurnished,landlord} = req.body;
+ 
+    Offer.findOneAndUpdate(id,{title,description,price,numb_room,city,localisation,isFurnished,imagePaths,landlord},{new:true},(err,offer)=>{
       if(!offer){
         res.status(404).send({ message : "offer was not found !!"});
       } 
@@ -64,7 +83,7 @@ exports.updateOffer=(req, res) => {
   //Get All published Offers
   exports.getAllOffers=async (req,res)=>{
     try {
-      const offers=await Offer.find({}).limit(10);
+      const offers=await Offer.find({}).sort({updatedAt:-1});
       res.json(offers);
     } catch (err) {
       res.status(400).send(err);
@@ -78,7 +97,7 @@ exports.updateOffer=(req, res) => {
       } else{
         res.json(offers);
       }
-    });
+    }).sort({updatedAt:-1});
 };
 exports.getByLandlord = (req,res) =>{
   const idLand = req.params.id;
@@ -162,7 +181,7 @@ exports.getByCriterias = async (req,res) => {
         }
         res.json(offers);
       }
-    });
+    }).sort({updatedAt:-1});
   }catch(err){
     console.log(err);
   }
