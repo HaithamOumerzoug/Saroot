@@ -7,6 +7,7 @@ const offer=require('./routes/offer');
 const reservation=require('./routes/reservation');
 const cors=require('cors');
 const bodyParser = require('body-parser');
+const report = require('./routes/report')
 
 require('dotenv').config();
 const expressVlidator = require('express-validator');
@@ -33,7 +34,7 @@ app.use('/api/users',user);
 app.use('/api/favorite',favorite);
 app.use('/api/offers',offer);
 app.use('/api/reservation',reservation);
-
+app.use('/api/report',report)
 
 
 const port=process.env.PORT || 3000;

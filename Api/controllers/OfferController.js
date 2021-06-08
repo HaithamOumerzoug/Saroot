@@ -168,24 +168,40 @@ exports.getByCriterias = async (req,res) => {
     if(minPrice == undefined) minPrice = 0;
     if(cityP == undefined) cityP = "";
     if(maxPrice == undefined) maxPrice = priceMax;
-    if(isFur == undefined) isFur = false;
     if(minPrice>maxPrice){
       return res.status(400).send({
         message : "Non trouvé"
       });
     }
-    Offer.find({$and : [{title:new RegExp(keyWord,'i')}, {description:new RegExp(keyWord,'i')},{city:new RegExp(cityP,'i')},{price: {$gte: minPrice}},{price : {$lte: maxPrice}},{isFurnished : isFur}]},function(err,offers){
-      if(err){
-        res.status(400).send(err);
-      }else{
-        if(offers.length== 0){
-          return res.status(400).send({
-            message : "Non trouvé"
-          });
+    if(isFur == "") 
+    {
+      Offer.find({$and : [{title:new RegExp(keyWord,'i')}, {description:new RegExp(keyWord,'i')},{city:new RegExp(cityP,'i')},{price: {$gte: minPrice}},{price : {$lte: maxPrice}}]},function(err,offers){
+        if(err){
+          res.status(400).send(err);
+        }else{
+          if(offers.length== 0){
+            return res.status(400).send({
+              message : "Non trouvé"
+            });
+          }
+          return res.json(offers);
         }
-        res.json(offers);
-      }
-    }).sort({updatedAt:-1});
+      }).sort({updatedAt:-1});
+    }
+      else {
+        Offer.find({$and : [{title:new RegExp(keyWord,'i')}, {description:new RegExp(keyWord,'i')},{city:new RegExp(cityP,'i')},{price: {$gte: minPrice}},{price : {$lte: maxPrice}},{isFurnished : isFur}]},function(err,offers){
+        if(err){
+          res.status(400).send(err);
+        }else{
+          if(offers.length== 0){
+            return res.status(400).send({
+              message : "Non trouvé"
+            });
+          }
+          res.json(offers);
+        }
+      }).sort({updatedAt:-1});
+    }
   }catch(err){
     console.log(err);
   }
