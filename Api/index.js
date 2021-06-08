@@ -12,7 +12,7 @@ require('dotenv').config();
 const expressVlidator = require('express-validator');
 const cookieParser=require('cookie-parser');
 
-mongoose.connect(process.env.DATABASE,{
+mongoose.connect(process.env.DATABASE_LOCAL,{
     useNewUrlParser:true,
     useCreateIndex:true,
     useUnifiedTopology:true})

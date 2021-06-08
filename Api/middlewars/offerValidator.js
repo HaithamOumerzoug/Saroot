@@ -1,7 +1,7 @@
 exports.offerValidator = (req,res,next)=>{
 
     req.check('title','titre is required !')
-        .notEmpty().isLength({max:30}).withMessage('title must be less then 30 caracter !');
+        .notEmpty().isLength({max:90}).withMessage('title must be less then 90 caracter !');
 
     req.check('description','description is required !')
         .notEmpty().isLength({min:5}).withMessage('description must be more then 5 caracter !');

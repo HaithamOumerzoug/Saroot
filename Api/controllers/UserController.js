@@ -13,7 +13,7 @@ const { google } = require('googleapis');
 const CLIENT_ID = '98563758135-7f35grih0qcf0bb8q0fhi5ernp5fumm2.apps.googleusercontent.com';
 const CLEINT_SECRET = 'ZXuCAptcF1icfhiTmdmHuHj8';
 const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//042k3ZX7HlKwKCgYIARAAGAQSNwF-L9IrnqL2xTAHWAJt9QHCleFOcfHP_cCkXoGQh6AtGcUmC6sIEMIS4xt0u_lqxLSGWjZ-ed4';
+const REFRESH_TOKEN = '1//047gS2hPx7DeICgYIARAAGAQSNwF-L9Ir-PQgQp4Fras1wISTnrFRGZAR_lUyNvyQEXkFfW3F7mK3ZWVP8nkZFIKAFCAvzejD7eI';
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -29,7 +29,7 @@ exports.signup=async (req,res)=>{
      if(req.file!==undefined) imagePath = `${process.env.URL}/${req.file.path}`;
     
     const {role,name,email,address,city,phone,password,gender} = req.body;
-    console.log();
+    console.log(await User.find({email:email}));
     //Tester le unicité d'email et phone 
     if(await(await User.find({email:email})).length!==0){return res.status(400).send({message:"Cet e-mail est déjà pris !!!"})}
     if(await(await User.find({phone:phone})).length!==0){return res.status(400).send({message:"Ce numéro de téléphone à déjà pris !!!"})}

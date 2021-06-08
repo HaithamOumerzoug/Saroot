@@ -14,6 +14,11 @@ const ReservationSchema =new mongoose.Schema({
     },
     message:{
         type:String,
+    },
+    typeRes:{
+        type:String,
+        enum:["Colloc", "Complet"],
+        require:true
     }
 },{timestamps:true})
 

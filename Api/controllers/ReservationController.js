@@ -1,8 +1,9 @@
 const Reservation = require('../models/reservation');
 
 exports.applyForRes =(req,res)=>{
-    const {userId,offerId,message} = req.query;
-    const reservation = new Reservation({client:userId,offer:offerId,message});
+    const {userId,offerId,typeOffer,message} = req.query;
+    console.log(typeOffer)
+    const reservation = new Reservation({client:userId,offer:offerId,typeRes:typeOffer,message});
     reservation.save((err,reservation)=>{
         if(err){
             return res.status(400).send(err);

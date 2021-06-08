@@ -4,11 +4,11 @@ const OfferSchema =new mongoose.Schema({
     title:{
         type:String,
         required:true,
-        maxlength:30
+        maxlength:90
     },
     description:{
         type:String,
-        maxlength:200,
+        maxlength:500,
         required:true 
     },
     price:{
@@ -28,6 +28,11 @@ const OfferSchema =new mongoose.Schema({
     },
     city:{
         type:String,
+        required:true
+    },
+    typeOffer:{
+        type:String,
+        enum:["Colloc", "Complet","Both"],
         required:true
     },
     isFurnished:{

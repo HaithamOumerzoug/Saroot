@@ -1,15 +1,16 @@
 const { findByIdAndUpdate } = require('../models/offer');
 const Offer = require('../models/offer');
 const Favorite = require('../models/favorite');
+const Reservation = require('../models/reservation');
 //Add Offer
 exports.addOffer=async (req,res)=>{
   var imagePaths=[];
   for(let file of req.files){
     if(file.path!==undefined) imagePaths=[...imagePaths,`${process.env.URL}/${file.path}`] ;
   }
-  const {title,description,price,numb_room,city,localisation,isFurnished,landlord} = req.body;
+  const {title,description,price,numb_room,city,localisation,isFurnished,landlord,typeOffer} = req.body;
   const offer = new Offer(
-    {title,description,price,numb_room,city,localisation,isFurnished,imagePaths,landlord}
+    {title,description,price,numb_room,city,localisation,isFurnished,typeOffer,imagePaths,landlord}
     );
   try {
     await offer.save();
@@ -22,7 +23,6 @@ exports.addOffer=async (req,res)=>{
 //Delete Offer
 exports.deleteOffer=async(req, res) => {
   const offerId = req.params.id;
-  console.log("bonjour");
 	try{
 		Favorite.deleteMany({offer: offerId }, function (err, rest) {
 			if (err){
@@ -30,11 +30,16 @@ exports.deleteOffer=async(req, res) => {
 			}
       console.log('All Favorites deleted');
 		});
+    Reservation.deleteMany({offer: offerId }, function (err, rest) {
+			if (err){
+				res.status(400).send(err);
+			}
+      console.log('All Reservation deleted');
+		});
 		const offerrem =await Offer.findByIdAndDelete(offerId);
 		res.json(offerrem);
         console.log("Offer has been deleted");
 	}catch(err){
-    console.log(err);
 		res.status(400).send({message : "ERROR"});
 	}
 }
@@ -43,7 +48,6 @@ exports.updateOffer=async (req, res) => {
   const id = req.params.id;
   var imagePaths=[];
   imagePaths=(await Offer.find({_id:id}).select({imagePaths:1}))[0].imagePaths;
-  console.log(req.files)
   if(req.files.length!==0){
     imagePaths=[];
     for(let file of req.files){
@@ -51,9 +55,9 @@ exports.updateOffer=async (req, res) => {
   }
   }
   
-  const {title,description,price,numb_room,city,localisation,isFurnished,landlord} = req.body;
+  const {title,description,price,numb_room,city,typeOffer,localisation,isFurnished,landlord} = req.body;
  
-    Offer.findOneAndUpdate(id,{title,description,price,numb_room,city,localisation,isFurnished,imagePaths,landlord},{new:true},(err,offer)=>{
+    Offer.findOneAndUpdate(id,{title,description,typeOffer,price,numb_room,city,localisation,isFurnished,imagePaths,landlord},{new:true},(err,offer)=>{
       if(!offer){
         res.status(404).send({ message : "offer was not found !!"});
       } 
