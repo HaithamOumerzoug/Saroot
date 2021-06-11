@@ -28,17 +28,17 @@ exports.deleteOffer=async(req, res) => {
 			if (err){
 				res.status(400).send(err);
 			}
-      console.log('All Favorites deleted');
+      //console.log('All Favorites deleted');
 		});
     Reservation.deleteMany({offer: offerId }, function (err, rest) {
 			if (err){
 				res.status(400).send(err);
 			}
-      console.log('All Reservation deleted');
+      //console.log('All Reservation deleted');
 		});
 		const offerrem =await Offer.findByIdAndDelete(offerId);
 		res.json(offerrem);
-        console.log("Offer has been deleted");
+        //console.log("Offer has been deleted");
 	}catch(err){
 		res.status(400).send({message : "ERROR"});
 	}
