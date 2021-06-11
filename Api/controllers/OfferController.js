@@ -105,7 +105,7 @@ exports.updateOffer=async (req, res) => {
 };
 exports.getByLandlord = (req,res) =>{
   const idLand = req.params.id;
-  console.log(idLand);
+  //console.log(idLand);
   Offer.find({landlord:idLand}, function (err, offers) {
     if (err){
       res.status(400).send(err);
