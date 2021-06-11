@@ -2,7 +2,7 @@ const Reservation = require('../models/reservation');
 
 exports.applyForRes =(req,res)=>{
     const {userId,offerId,typeOffer,message} = req.query;
-    console.log(typeOffer)
+    //console.log(typeOffer)
     const reservation = new Reservation({client:userId,offer:offerId,typeRes:typeOffer,message});
     reservation.save((err,reservation)=>{
         if(err){
