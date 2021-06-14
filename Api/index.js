@@ -34,8 +34,8 @@ app.use('/api/users',user);
 app.use('/api/favorite',favorite);
 app.use('/api/offers',offer);
 app.use('/api/reservation',reservation);
-app.use('/api/report',report)
+app.use('/api/report',report);
 
 
 const port=process.env.PORT || 3000;
-app.listen(port,()=>{console.log(`Application listen to port ${port}`)})
+app.listen(port,()=>{console.log(`Application listen to port ${port}`)});

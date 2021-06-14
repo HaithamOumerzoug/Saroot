@@ -163,24 +163,26 @@ exports.getByCriterias = async (req,res) => {
     const priceMax = offer[0].price;
     //Get query
     var {keyWord,cityP,minPrice,maxPrice,isFur} = req.query;
-
+    
     if(keyWord == undefined) keyWord = "";
     if(minPrice == undefined) minPrice = 0;
     if(cityP == undefined) cityP = "";
     if(maxPrice == undefined) maxPrice = priceMax;
+    minPrice=+minPrice;
+    maxPrice=+maxPrice;
     if(minPrice>maxPrice){
       return res.status(400).send({
-        message : "Non trouvé"
+        message : "Les prix sont invalide"
       });
     }
     if(isFur == "") 
     {
-      Offer.find({$and : [{title:new RegExp(keyWord,'i')}, {description:new RegExp(keyWord,'i')},{city:new RegExp(cityP,'i')},{price: {$gte: minPrice}},{price : {$lte: maxPrice}}]},function(err,offers){
+      Offer.find({$and : [{title:new RegExp(keyWord,'i')}, {description:new RegExp(keyWord,'i')},{city:new RegExp(cityP,'i')},{price : {$lte: maxPrice , $gte: minPrice}}]},function(err,offers){
         if(err){
           res.status(400).send(err);
         }else{
           if(offers.length== 0){
-            return res.status(400).send({
+            return res.send({
               message : "Non trouvé"
             });
           }
@@ -194,7 +196,7 @@ exports.getByCriterias = async (req,res) => {
           res.status(400).send(err);
         }else{
           if(offers.length== 0){
-            return res.status(400).send({
+            return res.send({
               message : "Non trouvé"
             });
           }
@@ -204,5 +206,6 @@ exports.getByCriterias = async (req,res) => {
     }
   }catch(err){
     console.log(err);
+    res.status(500);
   }
 }
