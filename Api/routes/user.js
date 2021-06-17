@@ -5,6 +5,7 @@ const {
     updateUser,
     getAllUsers,
     block_unblock,
+    getNbrOfblocks,
     deleteUser,
     confirmation_token,
     signup,
@@ -18,6 +19,7 @@ const {storage} = require('../helpers/storage');
 //API Routes
 
 //>>User
+router.get('/allblocks',getNbrOfblocks);
 router.get('/all',getAllUsers);
 router.get('/:id',verifierToken,getUser);
 router.put('/:id',storage,verifierToken,updateUser);

@@ -136,7 +136,8 @@ exports.getUser=async (req,res)=>{
     try{
         const user = await User.findById(id);
         if(!user) res.status(404).send({message : `Not found user with id ${id}` });
-        res.json(user);
+        const {_id,name,email,role,address,city,phone,gender,image,confirmed,blocked,imagePath} =user;
+        res.json({_id,name,email,role,address,city,phone,gender,image,confirmed,blocked,imagePath});
     }catch(err){
         res.status(400).send({message : "ERROR"});
     }
@@ -249,4 +250,15 @@ exports.confirmation_token=async (req,res)=>{
     } catch (err) {
         res.status(400).send("Invalid Token");
     }
+    //methode nombre des bloques
+   
 }
+ exports.getNbrOfblocks =async (req,res) =>{
+        try{
+            const users = await User.find({blocked:true});
+            if(!users) res.status(404).send({message : `Not found user` });
+            res.json(users);
+        }catch(err){
+            res.status(500).send({message : "ERROR"});
+        }
+    }

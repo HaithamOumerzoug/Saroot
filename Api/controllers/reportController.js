@@ -38,3 +38,11 @@ exports.showReportsByReporter= async (req,res)=>{
         res.status(400).send(err);
     }
 }
+exports.getAllReports = async (req,res) =>{
+    try {
+        const reporters =await Report.find({});
+        res.json(reporters);
+    } catch (err){
+        res.status(400).send(err);
+    }
+}

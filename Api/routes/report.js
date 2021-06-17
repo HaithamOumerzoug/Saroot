@@ -7,4 +7,5 @@ router.post('/report',report.report);
 router.delete('/:id',report.deleteReport);
 router.get('/showReportsByReported/:id',report.showReportsByReported);
 router.get('/showReportsByReporter/:id',report.showReportsByReporter);
+router.get('/getall',report.getAllReports);
 module.exports = router;

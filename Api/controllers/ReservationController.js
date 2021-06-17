@@ -40,3 +40,11 @@ exports.showReservationByClient= async (req,res)=>{
         res.status(400).send(err);
     }
 }
+exports.getAllReservation = async (req,res)=>{
+    try {
+        const Reservations =await Reservation.find({});
+        res.json(Reservations);
+    } catch (err){
+        res.status(400).send(err);
+    }
+}
