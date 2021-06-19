@@ -29,7 +29,7 @@ exports.signup=async (req,res)=>{
      if(req.file!==undefined) imagePath = `${process.env.URL}/${req.file.path}`;
     
     const {role,name,email,address,city,phone,password,gender} = req.body;
-    console.log(await User.find({email:email}));
+    //console.log(await User.find({email:email}));
     //Tester le unicité d'email et phone 
     if(await(await User.find({email:email})).length!==0){return res.status(400).send({message:"Cet e-mail est déjà pris !!!"})}
     if(await(await User.find({phone:phone})).length!==0){return res.status(400).send({message:"Ce numéro de téléphone à déjà pris !!!"})}
@@ -200,30 +200,30 @@ exports.deleteUser=async (req,res)=>{
 			if (err){
 				res.status(400).send(err);
 			}
-            console.log(`All reservations have been deleted ${rest}`);
+            //console.log(`All reservations have been deleted ${rest}`);
 		});
 		Offer.deleteMany({landlord: remId }, function (err, offer) {
 			if (err){
 				    res.status(400).send(err);
 			}
-            console.log("All offers have been deleted");
+            //console.log("All offers have been deleted");
 		});
 		Message.deleteMany({userSrc: remId,userDst: remId }, function (err, msg) {
 			if (err){
 				res.status(400).send(err);
 			}
-            console.log("All messages have been deleted");
+            //console.log("All messages have been deleted");
 		});
 		Favorite.deleteMany({client: remId }, function (err, fav) {
 			if (err){
 				res.status(400).send(err);
 			}
-            console.log("All favorites have been deleted");
+            //console.log("All favorites have been deleted");
 		});
 		const userrem =await User.findByIdAndDelete(remId);
         //Send deleted User
 		res.json(userrem);
-        console.log("User has been deleted");
+        //console.log("User has been deleted");
 	}catch(err){
 		res.status(400).send({message : "ERROR"});
 	}

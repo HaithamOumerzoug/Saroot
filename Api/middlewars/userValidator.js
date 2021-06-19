@@ -1,5 +1,5 @@
 exports.userSignUpValidator = (req,res,next)=>{
-    console.log(req.body);
+    //console.log(req.body);
 
     req.check('name','Name is required !')
         .notEmpty().isLength({max:50}).withMessage('Name must be less then 50 caracter !');

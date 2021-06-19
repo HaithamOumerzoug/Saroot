@@ -6,6 +6,7 @@ const Reservation = require('../models/reservation');
 exports.addOffer=async (req,res)=>{
   var imagePaths=[];
   for(let file of req.files){
+    console.log(process.env.URL)
     if(file.path!==undefined) imagePaths=[...imagePaths,`${process.env.URL}/${file.path}`] ;
   }
   const {title,description,price,numb_room,city,localisation,isFurnished,landlord,typeOffer} = req.body;
@@ -28,17 +29,17 @@ exports.deleteOffer=async(req, res) => {
 			if (err){
 				res.status(400).send(err);
 			}
-      console.log('All Favorites deleted');
+      //console.log('All Favorites deleted');
 		});
     Reservation.deleteMany({offer: offerId }, function (err, rest) {
 			if (err){
 				res.status(400).send(err);
 			}
-      console.log('All Reservation deleted');
+      //console.log('All Reservation deleted');
 		});
 		const offerrem =await Offer.findByIdAndDelete(offerId);
 		res.json(offerrem);
-        console.log("Offer has been deleted");
+        //console.log("Offer has been deleted");
 	}catch(err){
 		res.status(400).send({message : "ERROR"});
 	}
@@ -51,27 +52,26 @@ exports.updateOffer=async (req, res) => {
   if(req.files.length!==0){
     imagePaths=[];
     for(let file of req.files){
-    if(file.path!==undefined) imagePaths=[...imagePaths,`${process.env.URL}/${file.path}`] ;
+      if(file.path!==undefined) imagePaths=[...imagePaths,`${process.env.URL}/${file.path}`] ;
+    }
   }
-  }
-  
   const {title,description,price,numb_room,city,typeOffer,localisation,isFurnished,landlord} = req.body;
- 
-    Offer.findOneAndUpdate(id,{title,description,typeOffer,price,numb_room,city,localisation,isFurnished,imagePaths,landlord},{new:true},(err,offer)=>{
-      if(!offer){
-        res.status(404).send({ message : "offer was not found !!"});
-      } 
-      if(err){
-        res.status(500).send({
-          message : `Error Updating Offer with id = ${id}`
-        });
-      };
-      res.send({
-        Offer:offer,
-        message : "Offer was updated successfuly."
-      });
-     
-  });
+  try {
+    let offer = await Offer.findByIdAndUpdate({_id:id},{
+      $set:{title,description,typeOffer,price,numb_room,city,localisation,isFurnished,imagePaths,landlord}
+    },{new:true})
+    if(!offer){
+      return res.status(404).send({ message : "offer was not found !!"});
+    } 
+    res.send({
+      Offer:offer,
+      message : "Offer was updated successfuly."
+    });
+  } catch (err) {
+    res.status(500).send({
+      message : `Error Updating Offer with id = ${id}`
+    });
+  }
 }
 //Get One Offer
   exports.getOffer=(req,res)=>{
@@ -105,7 +105,7 @@ exports.updateOffer=async (req, res) => {
 };
 exports.getByLandlord = (req,res) =>{
   const idLand = req.params.id;
-  console.log(idLand);
+  //console.log(idLand);
   Offer.find({landlord:idLand}, function (err, offers) {
     if (err){
       res.status(400).send(err);
