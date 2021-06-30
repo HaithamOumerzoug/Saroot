@@ -61,7 +61,7 @@ exports.signup=async (req,res)=>{
                       service: 'gmail',
                       auth: {
                         type: 'OAuth2',
-                        user: process.env.USER,
+                        user: process.env.GMAIL_USER,
                         clientId: CLIENT_ID,
                         clientSecret: CLEINT_SECRET,
                         refreshToken: REFRESH_TOKEN,
@@ -71,7 +71,7 @@ exports.signup=async (req,res)=>{
                     });
                 
                     const mailOptions = {
-                        from:`Saroot <${process.env.USER}>`,
+                        from:`Saroot <${process.env.GMAIL_USER}>`,
                         to:user.email,
                         subject:'Email confirmation',
                         html:`Merci d\'avoir utiliser Saroot Location. Pour compléter votre inscription, veuillez confirmer votre adresse email en cliquant sur le lien suivant: <br> <a href="${process.env.URL_TOKEN}/${confirmation_token}">Confirmer mon compte</a>`
