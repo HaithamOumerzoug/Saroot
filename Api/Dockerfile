@@ -1,5 +1,5 @@
 FROM node:15
-WORKDIR /app
+WORKDIR /appapp/Saroot/Api
 COPY package.json .
 
 ARG NODE_ENV
