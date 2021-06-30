@@ -13,7 +13,15 @@ require('dotenv').config();
 const expressVlidator = require('express-validator');
 const cookieParser=require('cookie-parser');
 
-mongoose.connect(process.env.DATABASE,{
+const {
+    MONGO_IP,
+    MONGO_PORT,
+    MONGO_USER,
+    MONGO_PASSWORD
+  } = require("./config/config");
+
+const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
+mongoose.connect(mongoURL,{
     useNewUrlParser:true,
     useCreateIndex:true,
     useUnifiedTopology:true})

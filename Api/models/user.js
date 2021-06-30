@@ -52,7 +52,7 @@ const UserSchema =new mongoose.Schema({
     //Email Confirmation
     confirmed:{
         type:Boolean,
-        default:false
+        default:true
     },
     blocked:{
         type:Boolean,
