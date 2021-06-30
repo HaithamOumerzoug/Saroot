@@ -11,7 +11,7 @@ services:
       - node-app
   node-app:
     build: .
-    image: node
+    image: haitham31/saroot-node-app 
     ports:
       - "3000:3000"
     environment:
