@@ -9,8 +9,8 @@ services:
       args:
         NODE_ENV: development
     volumes:
-      - ./:/app
-      - /app/node_modules
+      - ./:/
+      - /node_modules
     environment:
       - NODE_ENV=development
       - MONGO_USER=saroot
