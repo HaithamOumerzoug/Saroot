@@ -4,7 +4,7 @@ const user = require('../models/user');
 const Favorite = require('../models/favorite');
 const Offer = require('../models/offer');
 const Message = require('../models/message');
-const Reservation = require('../models/Reservation');
+const Reservation = require('../models/reservation');
 const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 
