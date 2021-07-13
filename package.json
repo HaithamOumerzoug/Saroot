@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HaithamOumerzoug/Collocation.git"
+    "url": "git+https://github.com/HaithamOumerzoug/Saroot.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/HaithamOumerzoug/Collocation/issues"
+    "url": "https://github.com/HaithamOumerzoug/Saroot/issues"
   },
-  "homepage": "https://github.com/HaithamOumerzoug/Collocation#readme",
+  "homepage": "https://github.com/HaithamOumerzoug/Saroot#readme",
   "dependencies": {
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
