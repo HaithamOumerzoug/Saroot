@@ -77,7 +77,7 @@ UserSchema.methods={
         return this.crypter(EnterPassword)===this.hashed_password
     },
     crypter:function(password){
-        if(!password)return '';
+        if(!password) return '';
         try {
             return crypto.createHmac('sha1', this.salt)
                         .update(password)

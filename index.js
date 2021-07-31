@@ -9,7 +9,7 @@ const cors=require('cors');
 const bodyParser = require('body-parser');
 const report = require('./routes/report')
 
-require('dotenv').config();
+require('dotenv').config(); 
 const expressVlidator = require('express-validator');
 const cookieParser=require('cookie-parser');
 
@@ -21,7 +21,7 @@ const {
   } = require("./config/config");
 
 const mongoURL = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_IP}:${MONGO_PORT}/?authSource=admin`;
-mongoose.connect(mongoURL,{
+mongoose.connect(process.env.DATABASE,{
     useNewUrlParser:true,
     useCreateIndex:true,
     useUnifiedTopology:true})
@@ -36,7 +36,6 @@ app.use('/images', express.static('images'));
 app.use(cors());
 app.use(expressVlidator());
 app.use(cookieParser());
-app.use(cors());
 
 app.use('/api/users',user);
 app.use('/api/favorite',favorite);
